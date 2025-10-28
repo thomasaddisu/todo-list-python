@@ -7,33 +7,64 @@
 # ------------------------------
 
 
+import json
+
 # write to a file
+
+# def save_tasks():
+    # with open("todo.txt","wt") as file:
+    #     for name,time in tasks.items():
+    #         file.write(f"{name}|{time}\n")
+    # with open("tododone.txt","wt") as file:
+    #     for name,time in done_tasks.items():
+    #         file.write(f"{name}|{time}\n")
+
+# write to json file
+
 def save_tasks():
-    with open("todo.txt","wt") as file:
-        for name,time in tasks.items():
-            file.write(f"{name}|{time}\n")
-    with open("tododone.txt","wt") as file:
-        for name,time in done_tasks.items():
-            file.write(f"{name}|{time}\n")
+    with open("todo.json","w") as file:
+        json.dump(tasks,file)
+    with open("tododone.json","w") as file:
+        json.dump(done_tasks,file)
+
 
 tasks={}
 done_tasks={}
-# to load data
-try:
-    with open("todo.txt","rt") as file:
-        for line in file:
-            task,time=line.strip().split("|")
-            tasks[task]=time
-except FileNotFoundError:
-    pass
-try:
 
-    with open("tododone.txt","rt") as file:
-        for line in file:
-            task,time=line.strip().split("|")
-            done_tasks[task]=time
-except FileNotFoundError:
-    pass
+# to load data from text file
+
+# try:
+#     with open("todo.txt","rt") as file:
+#         for line in file:
+#             task,time=line.strip().split("|")
+#             tasks[task]=time
+# except FileNotFoundError:
+#     pass
+# try:
+
+#     with open("tododone.txt","rt") as file:
+#         for line in file:
+#             task,time=line.strip().split("|")
+#             done_tasks[task]=time
+# except FileNotFoundError:
+#     pass
+
+#  a function load data from json file
+
+def json_load(path):
+    try:
+        with open(path,"r") as file:
+            if not file:
+                return {}
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
+    except json.JSONDecodeError:
+        return {}
+
+tasks=json_load("todo.json")
+done_tasks=json_load("tododone.json")
+
 
 while True:
     print("\n📋 What do you want to do?")
